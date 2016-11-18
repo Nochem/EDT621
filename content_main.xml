@@ -27,7 +27,7 @@
         android:text="Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button2"
+        android:id="@+id/button"
         android:layout_marginBottom="61dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/editText"
         android:hint="Enter reminder"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:layout_below="@+id/textView"
