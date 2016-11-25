@@ -7,17 +7,10 @@ import android.media.RingtoneManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.*;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 import android.util.Log;
 import android.net.*;
-//import android.app.AlertDialog;
-//import android.content.DialogInterface;
-//import android.os.Bundle;
-//import android.view.View;
-//import android.support.v7.app.ActionBarActivity;
-
 import android.support.v7.app.NotificationCompat;
 
 
@@ -28,7 +21,7 @@ public class MyService extends Service {
     public Handler handler = null;
     public static Runnable runnable = null;
     public static String reminderText="???????";
-    public static String savedNetwork="??????";
+    public static String savedNetwork=null;
 
     public static void setReminder(String msg){
         input = msg;
@@ -45,26 +38,25 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Let it continue running until it's stopped
-        // I HAVE A TON OF QUESTIONS ABOUT WHAT THIS IS DOING
         Log.d(input, "The onStartCommand() service event");
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         ConnectivityManager check = (ConnectivityManager)
                 this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        //Network[] networks = check.getAllNetworks();
 
 
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.icon) //TODO: replace with an actual picture
                 .setContentTitle("Reminder:")
-                .setContentText(reminderText) //THis will have to come from the database
+                .setContentText(reminderText)
                 .setAutoCancel(true)
                 .setSound(uri)
                 .build();
         Activity mActivity = new Activity();
-        WifiManager wifiMgr = (WifiManager) mActivity.getSystemService(Context.WIFI_SERVICE);
-        final WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+        final WifiManager wifiMgr = (WifiManager) mActivity.getSystemService(Context.WIFI_SERVICE);
+        //String wifiinf=wifiInfo.getSSID();
+        //int wifiint=wifiInfo.getRssi();
+        //wifiInfo. close?
 
 
 
@@ -73,11 +65,10 @@ public class MyService extends Service {
             public void run(){
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show();
                 Log.d(input, "REMINDER!!!");
-
-
+                WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
                     if (savedNetwork!=null){
-                        if (savedNetwork==wifiInfo.getSSID()){
-                            if (wifiInfo.getRssi() == 0) {
+                        if (savedNetwork.equals(wifiInfo.getSSID())){
+                            if (wifiInfo.getRssi() == 1) {
                                 mBuilder.notify();
                             }
                         }
