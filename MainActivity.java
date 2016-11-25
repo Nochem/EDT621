@@ -26,8 +26,7 @@ public class MainActivity extends Activity {
     /* Called by the SAVE button. Starts the program. */
     public void save(){
         reminderText=input.getText().toString();
-        currentNetwork=wifi.getConnectionInfo().getSSID(); //TODO: Fix required permissions in manifest
-        //Some kind of while case here
+        currentNetwork=wifi.getConnectionInfo().getSSID();
         if (wifi.getConnectionInfo().getRssi() == 0) {
              mBuilder.notify();
         }
