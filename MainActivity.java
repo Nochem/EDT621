@@ -18,17 +18,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
     }
 
+    Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     EditText input = (EditText) findViewById(R.id.editText);
     WifiManager wifi;
 
-    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-            .setSmallIcon(R.drawable.notification_icon) //TODO: replace with an actual picture
-            .setContentTitle("Reminder:")
-            .setContentText(input)
-            .setAutoCancel()
-            .setSound(Notification.DEFAULT_SOUND)
-            .setVibrate(Notification.DEFAULT_VIBRATE)
-            .Build();
 
     /* Called by the SAVE button. Starts the program. */
     public void save(){
@@ -38,7 +31,15 @@ public class MainActivity extends Activity {
         if (wifi.getConnectionInfo().getRssi() == 0) {
              mBuilder.notify();
         }
-    }
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+            mBuilder.setSmallIcon(R.drawable.icon) //TODO: replace with an actual picture
+                .setContentTitle("Reminder:")
+                .setContentText(reminderText)
+                .setAutoCancel(true)
+                .setSound(uri)
+                .build();
+
+}
 }
 
 /*      String currentNetwork, homeNetwork;
