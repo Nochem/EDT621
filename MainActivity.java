@@ -1,53 +1,123 @@
-package com.example.nochem.afm;
+package com.exist.doesnt.g.myfirstapp;
 
-import android.app.Notification;
-import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
-import android.widget.EditText;
-import android.app.Activity;
+import android.content.Context;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.util.Log;
+import android.content.Intent;
+import android.app.Activity;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
-    private String reminderText;
+    String msg = "MainActivity ";
+    String savedNetwork;
+    //EditText input = (EditText) findViewById(R.id.editText);
 
+    /** Called when the activity is first created */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(msg, "The onCreate() event");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+
     }
 
-    Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-    EditText input = (EditText) findViewById(R.id.editText);
-    WifiManager wifi;
+    /** Save the string to a reminder */
+    public void save(View view){
+        EditText input = (EditText) findViewById(R.id.editText);
+        MyService.setReminder(input.getText().toString());
+        Log.d(msg, "SAVE CAllED");
+    }
+    
+    public void wifiRun(View view){
+        Activity mActivity = new Activity();
+        WifiManager wifiMgr = (WifiManager) mActivity.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+        savedNetwork=wifiInfo.getSSID();
+        mActivity.finish();
+    }
 
+    /** Start Service Method */
+    public void startService(View view){
+        startService(new Intent(getBaseContext(), MyService.class));
+    }
 
-    /* Called by the SAVE button. Starts the program. */
-    public void save(){
-        reminderText=input.getText().toString();
-        currentNetwork=wifi.getConnectionInfo().getSSID();
-        if (wifi.getConnectionInfo().getRssi() == 0) {
-             mBuilder.notify();
+    /** Stop Service Method */
+    public void stopService(View view) {
+        stopService(new Intent(getBaseContext(), MyService.class));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(msg, "The onStart() event");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(msg, "The onResume() event");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(msg , "The onPause() event");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(msg, "The onStop() event");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(msg, "The onDestroy() event");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-            mBuilder.setSmallIcon(R.drawable.icon) //TODO: replace with an actual picture
-                .setContentTitle("Reminder:")
-                .setContentText(reminderText)
-                .setAutoCancel(true)
-                .setSound(uri)
-                .build();
 
+        return super.onOptionsItemSelected(item);
+    }
 }
-}
-
-/*      String currentNetwork, homeNetwork;
-        homeNetwork=input2.getText().toString();  //Suggested code to make sure it won't go off on all wifis
-        if (currentNetwork.equals(homeNetwork)) {
-*/
-/**
- * This app will give reminderAlarm if the wifi-signal is cut FOR WHATEVER REASON.
- * This app demands that the user leaves the wifi on at all times.
- * This app must be started on the users home network (or whatever network the user wants it to work on)
- * This app could potentially use -alot- of performance if we don't stagger how often it checks the wifi.
- */
