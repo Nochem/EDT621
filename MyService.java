@@ -1,6 +1,8 @@
 package com.exist.doesnt.g.myfirstapp;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.*;
 import android.media.RingtoneManager;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.net.*;
 import android.support.v7.app.NotificationCompat;
 
+import static com.exist.doesnt.g.myfirstapp.R.attr.icon;
+
 
 public class MyService extends Service {
 
@@ -20,15 +24,17 @@ public class MyService extends Service {
     public Context context = this;
     public Handler handler = null;
     public static Runnable runnable = null;
-    public static String reminderText="???????";
+    public static String reminderText="????????";
     public static String savedNetwork=null;
+
+
+
+
+
 
     public static void setReminder(String msg){
         input = msg;
     }
-
-
-
 
     @Nullable
     @Override
@@ -36,27 +42,26 @@ public class MyService extends Service {
        return null;
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        Notification note =new Notification();
+                startForeground(1, note);
         Log.d(input, "The onStartCommand() service event");
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         ConnectivityManager check = (ConnectivityManager)
                 this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-        mBuilder.setSmallIcon(R.drawable.icon) //TODO: replace with an actual picture
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setSmallIcon(icon) //TODO: replace with an actual picture
                 .setContentTitle("Reminder:")
                 .setContentText(reminderText)
                 .setAutoCancel(true)
-                .setSound(uri)
-                .build();
-        Activity mActivity = new Activity();
-        final WifiManager wifiMgr = (WifiManager) mActivity.getSystemService(Context.WIFI_SERVICE);
-        //String wifiinf=wifiInfo.getSSID();
-        //int wifiint=wifiInfo.getRssi();
-        //wifiInfo. close?
+                .setSound(uri);
+        final android.app.Notification not =mBuilder.build();
+        final NotificationManager notifyMan =(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
 
 
 
@@ -65,19 +70,9 @@ public class MyService extends Service {
             public void run(){
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show();
                 Log.d(input, "REMINDER!!!");
-                WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-                    if (savedNetwork!=null){
-                        if (savedNetwork.equals(wifiInfo.getSSID())){
-                            if (wifiInfo.getRssi() == 1) {
-                                mBuilder.notify();
-                            }
-                        }
-                    } else {
-                        if (wifiInfo.getRssi() == 0) {
-                            mBuilder.notify();
-                        }
-                    }
 
+
+               //   notifyMan.notify(1, not);
 
 
 
