@@ -15,8 +15,6 @@ import android.util.Log;
 import android.net.*;
 import android.support.v7.app.NotificationCompat;
 
-import static com.exist.doesnt.g.myfirstapp.R.attr.icon;
-
 
 public class MyService extends Service {
 
@@ -53,8 +51,10 @@ public class MyService extends Service {
         ConnectivityManager check = (ConnectivityManager)
                 this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationManager notificationManager = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-        mBuilder.setSmallIcon(icon) //TODO: replace with an actual picture
+        mBuilder.setSmallIcon(R.drawable.icon)
                 .setContentTitle("Reminder:")
                 .setContentText(reminderText)
                 .setAutoCancel(true)
@@ -71,8 +71,7 @@ public class MyService extends Service {
                 Toast.makeText(context, input, Toast.LENGTH_LONG).show();
                 Log.d(input, "REMINDER!!!");
 
-
-               //   notifyMan.notify(1, not);
+                  notifyMan.notify(2, not);
 
 
 
