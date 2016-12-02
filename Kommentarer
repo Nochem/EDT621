@@ -1,1 +1,9 @@
-Fyra delar:Ui, bestående av xml filer skapade genom Android-Studios grafiska "builder".Notifikation, som påminner användaren om den textsträng den tidigare skrivit in, baserat på (i nuvarande fall) tid //Skulle kunna vara wifi, klockslag osvService som ser till att man inte behöver lämna appen öppen för att påminnelsen skall fungera.Sparfunktion i minnet för att strängen skall finnas tillgänglig, och att servicen skall kunna omstartas enkelt, efter omstart av systemet.Som användare startar man appen, skriven in vad man nu vill bli påminnd om och trycker sedan på programmets enda knapp. Detta startar då servicen som räknar ned tid innanen notifikation sänds. Som användare kan man nu avsluta appen, servicen fortsätter leverera notifikati
+Fyra delar:
+Ui, bestående av xml filer skapade genom Android-Studios grafiska "builder".
+Notifikation, som påminner användaren om den textsträng den tidigare skrivit in, baserat på (i nuvarande fall) tid //Skulle kunna vara wifi, klockslag osv
+Service som ser till att man inte behöver lämna appen öppen för att påminnelsen skall fungera.
+Sparfunktion i minnet för att strängen skall finnas tillgänglig, och att servicen skall kunna omstartas enkelt, efter omstart av systemet.
+
+Som användare startar man appen, skriven in vad man nu vill bli påminnd om och trycker sedan på programmets enda knapp. 
+Detta startar då servicen som räknar ned tid innanen notifikation sänds.
+Som användare kan man nu avsluta appen, servicen fortsätter leverera notifikatier
